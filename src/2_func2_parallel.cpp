@@ -2,6 +2,9 @@
 #include <RcppParallel.h>
 using namespace arma;
 
+#include <convert_seed.h> //For dqrng::convert_seed
+#include <R_randgen.h> //For dqrng::R_random_int
+
 vec generateVector(const int m){
   mat noiseMatrix=randn(m,2);
 
@@ -31,9 +34,17 @@ struct RandomFill:public RcppParallel::Worker{
 };
 
 //[[Rcpp::export]]
-Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n,const int seed){
+Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n,Rcpp::Nullable<Rcpp::IntegerVector> seed=R_NilValue){
+  uint64_t _seed;
+  if (seed.isNotNull()){
+    _seed=dqrng::convert_seed<uint64_t>(seed.as());
+  }
+  else{ //Get a seed from R's RNG in case the user did not provide one
+    _seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
+  }
+
   Rcpp::NumericMatrix outputRcpp(m,n);
-  RandomFill randomFill(outputRcpp,seed);
+  RandomFill randomFill(outputRcpp,_seed);
   RcppParallel::parallelFor(0,n,randomFill);
   return outputRcpp;
 }
