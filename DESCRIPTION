@@ -13,7 +13,7 @@ LinkingTo:
     Rcpp,
     RcppArmadillo,
     RcppParallel,
-    dqrng,BH,sitmo
+    dqrng,sitmo
 Imports: 
     Rcpp,
     RcppParallel
