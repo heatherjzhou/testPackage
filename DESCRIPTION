@@ -15,6 +15,7 @@ LinkingTo:
     RcppParallel
 Imports: 
     Rcpp,
-    RcppParallel
+    RcppParallel,
+    dqrng,BH,sitmo
 SystemRequirements: GNU make
 

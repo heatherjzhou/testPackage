@@ -18,9 +18,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// parallel_random_matrix
+Rcpp::NumericMatrix parallel_random_matrix(const int m, const int n, const int seed);
+RcppExport SEXP _testPackage_parallel_random_matrix(SEXP mSEXP, SEXP nSEXP, SEXP seedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(parallel_random_matrix(m, n, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_testPackage_myFastLM", (DL_FUNC) &_testPackage_myFastLM, 2},
+    {"_testPackage_parallel_random_matrix", (DL_FUNC) &_testPackage_parallel_random_matrix, 3},
     {NULL, NULL, 0}
 };
 

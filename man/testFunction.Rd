@@ -4,7 +4,7 @@
 \alias{testFunction}
 \title{Test function}
 \usage{
-testFunction()
+testFunction(m, n, seed = NULL)
 }
 \description{
 Test function
