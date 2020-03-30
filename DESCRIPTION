@@ -11,6 +11,10 @@ LazyData: true
 RoxygenNote: 7.1.0
 LinkingTo: 
     Rcpp,
-    RcppArmadillo
+    RcppArmadillo,
+    RcppParallel
 Imports: 
-    Rcpp
+    Rcpp,
+    RcppParallel
+SystemRequirements: GNU make
+
