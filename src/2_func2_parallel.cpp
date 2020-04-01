@@ -6,7 +6,7 @@ using namespace arma;
 #include <R_randgen.h> //For dqrng::R_random_int
 #include <dqrng_distribution.h> //For dqrng::rng64_t, dqrng::generator, dqrng::xoroshiro128plus, and dqrng::normal_distribution
 
-vec generateVector(const int n,dqrng::rng64_t rng){
+vec generateVector(const int n,const dqrng::rng64_t rng){
   mat noiseMatrix(n,2);
   //Draw each entry from normal(0,1)
   dqrng::normal_distribution normal(0,1);
