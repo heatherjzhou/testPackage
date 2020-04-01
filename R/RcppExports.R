@@ -5,7 +5,7 @@ myFastLM <- function(X, y) {
     .Call(`_testPackage_myFastLM`, X, y)
 }
 
-parallel_random_matrix <- function(m, n, seed) {
-    .Call(`_testPackage_parallel_random_matrix`, m, n, seed)
+parallel_random_matrix <- function(m, n, seedRaw) {
+    .Call(`_testPackage_parallel_random_matrix`, m, n, seedRaw)
 }
 

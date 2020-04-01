@@ -9,5 +9,5 @@
 # }
 
 testFunction<-function(m,n,seed=NULL){
-  return(parallel_random_matrix(m=m,n=n,seed=seed))
+  return(parallel_random_matrix(m=m,n=n,seedRaw=seed))
 }

@@ -19,15 +19,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // parallel_random_matrix
-Rcpp::NumericMatrix parallel_random_matrix(const int m, const int n, Rcpp::Nullable<Rcpp::IntegerVector> seed);
-RcppExport SEXP _testPackage_parallel_random_matrix(SEXP mSEXP, SEXP nSEXP, SEXP seedSEXP) {
+Rcpp::NumericMatrix parallel_random_matrix(const int m, const int n, Rcpp::Nullable<Rcpp::IntegerVector> seedRaw);
+RcppExport SEXP _testPackage_parallel_random_matrix(SEXP mSEXP, SEXP nSEXP, SEXP seedRawSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const int >::type m(mSEXP);
     Rcpp::traits::input_parameter< const int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::IntegerVector> >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(parallel_random_matrix(m, n, seed));
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::IntegerVector> >::type seedRaw(seedRawSEXP);
+    rcpp_result_gen = Rcpp::wrap(parallel_random_matrix(m, n, seedRaw));
     return rcpp_result_gen;
 END_RCPP
 }

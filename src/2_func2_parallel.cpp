@@ -7,17 +7,17 @@ using namespace arma;
 #include <dqrng_distribution.h> //For dqrng::rng64_t, dqrng::generator, dqrng::xoroshiro128plus, and dqrng::normal_distribution
 
 vec generateVector(const int n,dqrng::rng64_t rng){
-  arma::mat noiseMatrix(n,2);
+  mat noiseMatrix(n,2);
   //Draw each entry from normal(0,1)
   dqrng::normal_distribution normal(0,1);
   noiseMatrix.imbue([&](){return normal(*rng);});
 
-  arma::vec noiseVector(n);
+  vec noiseVector(n);
   //Draw each entry from (1,2,3,4) with replacement (equal probabilities)
   noiseVector.imbue([&](){return (*rng)(uint32_t(4))+1;});
   //cout<<noiseVector<<endl; //4.0000, 3.0000, 1.0000, 2.0000, 2.0000, ...
 
-  arma::vec toReturn=noiseMatrix.col(0)+noiseMatrix.col(1)+noiseVector;
+  vec toReturn=noiseMatrix.col(0)+noiseMatrix.col(1)+noiseVector;
   return toReturn;
 }
 
@@ -42,17 +42,17 @@ struct RandomFill:public RcppParallel::Worker{
 };
 
 //[[Rcpp::export]]
-Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n,Rcpp::Nullable<Rcpp::IntegerVector> seed){
-  uint64_t _seed;
-  if (seed.isNotNull()){
-    _seed=dqrng::convert_seed<uint64_t>(seed.as()); //This stores the value of seed in _seed. Simply using "_seed=seed;" doesn't work.
+Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n,Rcpp::Nullable<Rcpp::IntegerVector> seedRaw){
+  uint64_t seed;
+  if (seedRaw.isNotNull()){
+    seed=dqrng::convert_seed<uint64_t>(seedRaw.as()); //This stores the value of seedRaw in seed. Simply using "seed=seedRaw;" doesn't work.
   }
   else{ //Generate a seed if the user did not provide one
-    _seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
+    seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
   }
 
   Rcpp::NumericMatrix outputRcpp(m,n);
-  RandomFill randomFill(outputRcpp,_seed);
+  RandomFill randomFill(outputRcpp,seed);
   RcppParallel::parallelFor(0,n,randomFill);
   return outputRcpp;
 }
