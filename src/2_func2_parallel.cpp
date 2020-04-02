@@ -6,7 +6,7 @@ using namespace arma;
 #include <convert_seed.h> //For dqrng::convert_seed
 #include <dqrng_distribution.h> //For dqrng::rng64_t, dqrng::generator, dqrng::xoroshiro128plus, and dqrng::normal_distribution
 
-vec generateVector(const int n,dqrng::rng64_t rng){
+vec generateVector(const int n,const dqrng::rng64_t rng){
   mat noiseMatrix(n,2);
   //Draw each entry from normal(0,1)
   dqrng::normal_distribution normal(0,1);
@@ -24,13 +24,13 @@ vec generateVector(const int n,dqrng::rng64_t rng){
 struct RandomFill:public RcppParallel::Worker{
   RcppParallel::RMatrix<double> outputRM;
   const int m;
-  uint64_t seed;
+  const uint64_t seed;
 
-  RandomFill(Rcpp::NumericMatrix outputRcpp,uint64_t seed)
+  RandomFill(Rcpp::NumericMatrix outputRcpp,const uint64_t seed)
     :outputRM(outputRcpp),m(outputRcpp.nrow()),seed(seed){};
 
   void operator()(std::size_t begin,std::size_t end){
-    dqrng::rng64_t rng=dqrng::generator<dqrng::xoroshiro128plus>(seed);
+    const dqrng::rng64_t rng=dqrng::generator<dqrng::xoroshiro128plus>(seed);
     rng->seed(seed,end);
     for (std::size_t colIndex=begin;colIndex<end;colIndex++) {
       vec newColumn=generateVector(m,rng);
@@ -44,7 +44,7 @@ struct RandomFill:public RcppParallel::Worker{
 //[[Rcpp::export]]
 Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n){
   //Generate a seed from R's RNG
-  uint64_t seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
+  const uint64_t seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
 
   Rcpp::NumericMatrix outputRcpp(m,n);
   RandomFill randomFill(outputRcpp,seed);
