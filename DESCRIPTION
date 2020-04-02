@@ -1,10 +1,10 @@
 Package: testPackage
 Type: Package
-Title: Generalized R Square Measures for a Mixture of Bivariate Linear Dependences
+Title: Test package
 Version: 0.1.0
-Author: Jingyi Jessica Li, Heather J Zhou
-Maintainer: Jingyi Jessica Li <jli@stat.ucla.edu>, Heather J Zhou <heatherjzhou@ucla.edu>
-Description: This package implements the estimation and inference of generalized R square.
+Author: Heather J Zhou
+Maintainer: Heather J Zhou <heatherjzhou@ucla.edu>
+Description: This is a test package.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

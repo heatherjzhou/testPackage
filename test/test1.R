@@ -1,3 +1,4 @@
+devtools::install_github("heatherjzhou/testPackage",auth_token="7b41bc7fba5cd2c0abbc2ca9feb7abc982dd8a8c")
 library(testPackage)
 
 set.seed(1)
