@@ -17,4 +17,5 @@ LinkingTo:
 Imports:
     Rcpp
 SystemRequirements: GNU make
-
+URL: https://github.com/heatherjzhou/testPackage
+BugReports: https://github.com/heatherjzhou/testPackage/issues
