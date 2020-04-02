@@ -1,13 +1,18 @@
 library(testPackage)
 
-res1<-testFunction(m=7,n=3,seed=10)
+set.seed(1)
+res1<-testFunction(m=7,n=3)
 print(res1)
-res2<-testFunction(m=7,n=3,seed=10)
+set.seed(1)
+res2<-testFunction(m=7,n=3)
 print(res2)
 print(res1==res2)
 
-res1<-testFunction(m=7,n=3,seed=5)
+set.seed(7)
+res1<-testFunction(m=7,n=3)
 print(res1)
-res1<-testFunction(m=7,n=3,seed=NULL)
-print(res1)
+set.seed(7)
+res2<-testFunction(m=7,n=3)
+print(res2)
+print(res1==res2)
 

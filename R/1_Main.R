@@ -8,6 +8,6 @@
 #   myFastLM(X,y)
 # }
 
-testFunction<-function(m,n,seed=NULL){
-  return(parallel_random_matrix(m=m,n=n,seedRaw=seed))
+testFunction<-function(m,n){
+  return(parallel_random_matrix(m=m,n=n))
 }

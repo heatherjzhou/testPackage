@@ -2,11 +2,11 @@
 #include <RcppParallel.h>
 using namespace arma;
 
-#include <convert_seed.h> //For dqrng::convert_seed
 #include <R_randgen.h> //For dqrng::R_random_int
+#include <convert_seed.h> //For dqrng::convert_seed
 #include <dqrng_distribution.h> //For dqrng::rng64_t, dqrng::generator, dqrng::xoroshiro128plus, and dqrng::normal_distribution
 
-vec generateVector(const int n,const dqrng::rng64_t rng){
+vec generateVector(const int n,dqrng::rng64_t rng){
   mat noiseMatrix(n,2);
   //Draw each entry from normal(0,1)
   dqrng::normal_distribution normal(0,1);
@@ -24,9 +24,9 @@ vec generateVector(const int n,const dqrng::rng64_t rng){
 struct RandomFill:public RcppParallel::Worker{
   RcppParallel::RMatrix<double> outputRM;
   const int m;
-  const uint64_t seed;
+  uint64_t seed;
 
-  RandomFill(Rcpp::NumericMatrix outputRcpp,const uint64_t seed)
+  RandomFill(Rcpp::NumericMatrix outputRcpp,uint64_t seed)
     :outputRM(outputRcpp),m(outputRcpp.nrow()),seed(seed){};
 
   void operator()(std::size_t begin,std::size_t end){
@@ -42,14 +42,9 @@ struct RandomFill:public RcppParallel::Worker{
 };
 
 //[[Rcpp::export]]
-Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n,Rcpp::Nullable<Rcpp::IntegerVector> seedRaw){
-  uint64_t seed;
-  if (seedRaw.isNotNull()){
-    seed=dqrng::convert_seed<uint64_t>(seedRaw.as()); //This stores the value of seedRaw in seed. Simply using "seed=seedRaw;" doesn't work.
-  }
-  else{ //Generate a seed if the user did not provide one
-    seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
-  }
+Rcpp::NumericMatrix parallel_random_matrix(const int m,const int n){
+  //Generate a seed from R's RNG
+  uint64_t seed=dqrng::convert_seed<uint64_t>(Rcpp::IntegerVector(2,dqrng::R_random_int));
 
   Rcpp::NumericMatrix outputRcpp(m,n);
   RandomFill randomFill(outputRcpp,seed);
