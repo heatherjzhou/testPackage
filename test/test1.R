@@ -9,6 +9,7 @@ res2<-testFunction(m=7,n=3)
 print(res2)
 print(res1==res2)
 
+#Not declaring seed or rng as constants gives the following results:
 # [,1]       [,2]       [,3]
 # [1,] 2.984820 -0.2167465  5.6327765
 # [2,] 2.503436  2.9743294  2.0956222
